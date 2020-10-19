@@ -10,7 +10,7 @@ That said I'm not expecting too much drama to get it working (if any)
 - Via a Golang API server with Gorilla Mux
 - The API server an be run locally or as a Google Cloud Function (GCP Function) protected by Google Endpoints; or... tbd Azure Functions
 - Persistence uses Google Cloud Firestore as a backend
-- The code does not know the backend, access is abstracted via [https://github.com/adeturner/persistenceServices]
+- The code does not know the backend, access is abstracted via <https://github.com/adeturner/persistenceServices>
 
 The project is setup to enable additional APIs to be added into the project:
 
@@ -22,8 +22,8 @@ The project is setup to enable additional APIs to be added into the project:
 
 ### Useful background
 
-If you want just Google Cloud Firestore, any web searches that mention *Firebase* Firstore should be treated with a pinch of salt
-... unless you really want it! There be devils lurking.
+If you want use Google Cloud Firestore, any web searches that mention *Firebase* Firestore should be treated with a pinch of salt
+... unless you really want it! There be devils lurking such as a different permissions model.
 
 ### API Routes
 
@@ -50,7 +50,7 @@ cd src
 git clone https://github.com/adeturner/exampleAPI
 ```
 
-Create a secret environment file...
+Create a secret environment file... Auth is not used when testing locally
 
 ```bash
 cat > ~/secrets/apiv01-exampleAPI-env.sh << EOF
@@ -73,7 +73,9 @@ EOF
 
 WARNING!
 
-You need Firestore and Pubsub; the build directory has some scripts, they are not tested for automated build. Please run by hand until sure.
+You need Firestore and Endpoints for the Function to interact with.  Pubsub is created in <https://github.com/adeturner/exampleTrigger>
+
+The build directory has some scripts, they are not tested for automated build. Please run by hand until sure.
 
 ## Local testing
 
