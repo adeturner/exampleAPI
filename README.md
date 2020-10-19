@@ -1,8 +1,8 @@
 # ExampleAPI
 
-Unsupported and currently not fully tested because I quickly made a copy of another project to create the example
+Unsupported and only tested locally because I quickly made a copy of another project to create the example
 
-That said I'm not expecting too much drama (if any) to get it working)
+That said I'm not expecting too much drama to get it working (if any)
 
 ## Overview
 
