@@ -1,0 +1,23 @@
+  Source:
+    allOf:
+      - $ref: '#/definitions/NewSource'
+      - $ref: '#/definitions/Source_allOf'
+  NewSource:
+    example:
+      name: name
+      tag: tag
+    properties:
+      name:
+        type: string
+      tag:
+        type: string
+    required:
+      - name
+    type: object
+  Source_allOf:
+    properties:
+      id:
+        format: int
+        type: integer
+    required:
+      - id

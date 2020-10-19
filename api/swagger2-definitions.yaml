@@ -1,0 +1,12 @@
+definitions:
+  Error:
+    properties:
+      code:
+        format: int
+        type: integer
+      message:
+        type: string
+    required:
+      - code
+      - message
+    type: object

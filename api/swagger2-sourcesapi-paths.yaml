@@ -1,0 +1,140 @@
+  /sources:
+    get:
+      description: |
+        Lists all sources
+      operationId: findSources
+      parameters:
+        - description: tags to filter by
+          in: query
+          name: tags
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          required: false
+          format: int
+          type: integer
+      security:
+       - auth0_jwt: []
+      responses:
+        '200':
+          description: sources response
+          schema:
+            items:
+              $ref: '#/definitions/Source'
+            type: array
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      produces:
+        - application/json
+    post:
+      description: Creates a new source. Duplicates are allowed
+      operationId: addSource
+      security:
+       - auth0_jwt: []
+      responses:
+        '200':
+          description: pet response
+          schema:
+            $ref: '#/definitions/Source'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      parameters:
+        - description: Source to add
+          required: true
+          name: body
+          in: body
+          schema:
+            $ref: '#/definitions/NewSource'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+  '/sources/{id}':
+    put:
+      description: Update a source. Duplicates are allowed
+      operationId: updateSource
+      security:
+       - auth0_jwt: []
+      responses:
+        '200':
+          description: response
+          schema:
+            $ref: '#/definitions/Source'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      parameters:
+        - description: ID of source to delete
+          in: path
+          name: id
+          required: true
+          format: int
+          type: integer
+        - description: source values
+          required: true
+          name: body
+          in: body
+          schema:
+            $ref: '#/definitions/NewSource'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+    delete:
+      description: deletes a single source based on the ID supplied
+      operationId: deleteSource
+      parameters:
+        - description: ID of source to delete
+          in: path
+          name: id
+          required: true
+          format: int
+          type: integer
+      security:
+       - auth0_jwt: []
+      responses:
+        '204':
+          description: source deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      produces:
+        - application/json
+    get:
+      description: Returns a source based on a single ID
+      operationId: find source by id
+      parameters:
+        - description: ID of source to fetch
+          in: path
+          name: id
+          required: true
+          format: int
+          type: integer
+      security:
+       - auth0_jwt: []
+      responses:
+        '200':
+          description: sources response
+          schema:
+            $ref: '#/definitions/Source'
+        '400':
+          description: The specified source ID is invalid (not a number).
+        '404':
+          description: A source with the specified ID was not found.
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      produces:
+        - application/json

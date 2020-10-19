@@ -1,0 +1,32 @@
+swagger: "2.0"
+info:
+  description: 'Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.'
+  title: REPLACE_WITH_API
+  version: 0.1.0
+host: GOOGLE-CLOUD-ENDPOINT-URL
+schemes:
+  - https
+basePath: /api/v1
+x-google-backend:
+  address: https://FUNCTIONS_REGION-GCP_PROJECT.cloudfunctions.net/REPLACE_WITH_API
+  protocol: h2
+securityDefinitions:
+  auth0_jwt:
+    authorizationUrl: "https://mydomain.eu.auth0.com/authorize"
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://mydomain.eu.auth0.com/"
+    x-google-jwks_uri: "https://mydomain.eu.auth0.com/.well-known/jwks.json"
+    x-google-audiences: "https://www.mydomain.com/api"
+paths:
+  /ping:
+    get:
+      description: heartbeat op
+      operationId: ping
+      security:
+       - auth0_jwt: []
+      responses:
+        '200':
+          description: OK
+      summary: Server heartbeat operation
+      parameters: []
