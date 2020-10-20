@@ -34,7 +34,7 @@ r = append(r, utils.Route{Name: name + "Add", Method: strings.ToUpper("Post"), P
 r = append(r, utils.Route{Name: name + "Update", Method: strings.ToUpper("Put"), Pattern: "/api/v1/" + api + "/{id}", HandlerFunc: uac.Update})
 r = append(r, utils.Route{Name: name + "Delete", Method: strings.ToUpper("Delete"), Pattern: "/api/v1/" + api + "/{id}", HandlerFunc: uac.Delete})
 r = append(r, utils.Route{Name: name + "FindById", Method: strings.ToUpper("Get"), Pattern: "/api/v1/" + api + "/{id}", HandlerFunc: uac.FindById})
-r = append(r, utils.Route{Name: name + "FindByTags", Method: strings.ToUpper("Get"), Pattern: "/api/v1/" + api, HandlerFunc: uac.FindByTags})
+r = append(r, utils.Route{Name: name + "Find", Method: strings.ToUpper("Get"), Pattern: "/api/v1/" + api, HandlerFunc: uac.Find})
 ```
 
 ## Setting up
@@ -84,7 +84,7 @@ The build directory has some scripts, they are not tested for automated build. P
 To run the server locally, follow these simple steps:
 
 ```bash
-export LOG_LEVEL=INFO
+export LOG_LEVEL=DEBUG
 export USE_FIRESTORE=true
 export USE_PUBSUB=true
 export USE_CQRS=true

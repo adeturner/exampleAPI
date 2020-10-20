@@ -33,3 +33,13 @@ curl -s -w "%{http_code}\n" -X DELETE http://localhost:8080/api/v1/${TESTAPI}/${
 curl -s -w "%{http_code}\n" -X GET http://localhost:8080/api/v1/${TESTAPI}/${TESTID}
 # 500
 
+
+###########
+
+curl -s -w "%{http_code}\n" -d '{"name": "foo", "tag": "bar"}' -X POST http://localhost:8080/api/v1/${TESTAPI}
+
+curl -s -w "%{http_code}\n" -X GET http://localhost:8080/api/v1/${TESTAPI}?Name=beento
+
+curl -s -w "%{http_code}\n" -X GET http://localhost:8080/api/v1/${TESTAPI}?Name=beento\&Name=foo
+
+curl -s -w "%{http_code}\n" -X GET http://localhost:8080/api/v1/${TESTAPI}?Name=foo
