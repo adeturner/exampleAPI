@@ -10,8 +10,7 @@ type SourcesApiRouter interface {
 	Update(http.ResponseWriter, *http.Request)
 	Delete(http.ResponseWriter, *http.Request)
 	FindById(http.ResponseWriter, *http.Request)
-	FindByTags(http.ResponseWriter, *http.Request)
-	PingGet(http.ResponseWriter, *http.Request)
+	Find(http.ResponseWriter, *http.Request)
 }
 
 // DefaultApiServicer defines the api actions for the DefaultApi service
@@ -23,6 +22,5 @@ type SourcesApiServicer interface {
 	Update(string, interface{}) (interface{}, error)
 	Delete(string) (interface{}, error)
 	FindById(string) (interface{}, error)
-	FindByTags([]string, string) (interface{}, error)
-	PingGet() (interface{}, error)
+	Find(map[string][]string) (interface{}, error)
 }

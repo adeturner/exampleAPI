@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/adeturner/exampleAPI/utils"
@@ -27,8 +28,7 @@ func (uac *SourcesApiController) AddRoutes(r utils.Routes) utils.Routes {
 	r = append(r, utils.Route{Name: name + "Update", Method: strings.ToUpper("Put"), Pattern: "/api/v1/" + api + "/{id}", HandlerFunc: uac.Update})
 	r = append(r, utils.Route{Name: name + "Delete", Method: strings.ToUpper("Delete"), Pattern: "/api/v1/" + api + "/{id}", HandlerFunc: uac.Delete})
 	r = append(r, utils.Route{Name: name + "FindById", Method: strings.ToUpper("Get"), Pattern: "/api/v1/" + api + "/{id}", HandlerFunc: uac.FindById})
-	r = append(r, utils.Route{Name: name + "FindByTags", Method: strings.ToUpper("Get"), Pattern: "/api/v1/" + api, HandlerFunc: uac.FindByTags})
-	r = append(r, utils.Route{Name: name + "PingGet", Method: strings.ToUpper("Get"), Pattern: "/api/v1/" + api + "/ping", HandlerFunc: uac.PingGet})
+	r = append(r, utils.Route{Name: name + "Find", Method: strings.ToUpper("Get"), Pattern: "/api/v1/" + api, HandlerFunc: uac.Find})
 	return r
 }
 
@@ -127,38 +127,34 @@ func (uac *SourcesApiController) FindById(w http.ResponseWriter, r *http.Request
 	utils.EncodeJSONResponse(result, nil, w)
 }
 
-// FindByTags -
-func (uac *SourcesApiController) FindByTags(w http.ResponseWriter, r *http.Request) {
+// Find -
+// Takes queryParams from the URL and uses them to build a search
+// e.g. /api/v1/users?Email=dave.jones@maersk.com will search for matches on User.Email=dave.jones
+// e.g. /api/v1/users?Email=dave.jones@maersk.com?Email=a.b@c.com will apply an Or to the email addresses
+func (uac *SourcesApiController) Find(w http.ResponseWriter, r *http.Request) {
 
-	// customise
+	/*
+		Repeating some info on url.Values to show how they work
+
+		v.Set("name", "Ava")
+		v.Add("friend", "Jess")
+		// v.Encode() == "name=Ava&friend=Jess&friend=Sarah&friend=Zoe"
+		fmt.Println(v.Get("name"))
+		fmt.Println(v.Get("friend"))
+		fmt.Println(v["friend"])
+	*/
+
 	this := uac.Service
 
-	// boilerplate
-	query := r.URL.Query()
-	tags := strings.Split(query.Get("tags"), ",")
-	limit := query.Get("limit")
+	// boilerplate:
+	var err error
+	var params url.Values
+	params = r.URL.Query()
 
-	result, err := this.FindByTags(tags, limit)
-	if err != nil {
-		observability.Logger("Error", fmt.Sprintf("FindByTags: %v", err))
-		w.WriteHeader(500)
-		return
-	}
-
-	utils.EncodeJSONResponse(result, nil, w)
-}
-
-// PingGet - Server heartbeat operation
-func (uac *SourcesApiController) PingGet(w http.ResponseWriter, r *http.Request) {
-
-	// customise
-	this := uac.Service
-
-	// boilerplate
-	result, err := this.PingGet()
+	result, err := this.Find(params)
 
 	if err != nil {
-		observability.Logger("Error", fmt.Sprintf("PingGet: err=%v", err))
+		observability.Logger("Error", fmt.Sprintf("%v", err))
 		w.WriteHeader(500)
 		return
 	}

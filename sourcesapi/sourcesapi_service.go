@@ -59,36 +59,14 @@ func (srv *SourcesapiService) FindById(id string) (interface{}, error) {
 	return srv.persistenceLayer.FindById(id, Source{})
 }
 
-/*
-FindSources -
-curl -v -X GET http://localhost:8080/api/v1/Sources?tags=value2\&limit=4
+// Find -
+// Takes queryParams from the URL and uses them to build a search
+// e.g. /api/v1/users?Email=dave.jones@maersk.com
+// will search for matches on User.Email
 
-rpc error: code = FailedPrecondition desc = The query requires an index. You can create it here
+func (srv *SourcesapiService) Find(queryParams map[string][]string) (interface{}, error) {
 
-gcloud firestore indexes composite create --collection-group=Sources --field-config field-path=Tag,order=ascending --field-config field-path=Name,order=ascending --async
+	// func (p *PersistenceLayer) Find(queryParams map[string][]string, value interface{}) (valuesArray interface{}, err error) {
 
-
--- takes several minutes even when empty, run the following until it completes
-
-gcloud firestore indexes composite list
-┌──────────────┬──────────────────┬─────────────┬───────┬─────────────┬───────────┬──────────────┐
-│     NAME     │ COLLECTION_GROUP │ QUERY_SCOPE │ STATE │ FIELD_PATHS │   ORDER   │ ARRAY_CONFIG │
-├──────────────┼──────────────────┼─────────────┼───────┼─────────────┼───────────┼──────────────┤
-│ CICAgJim14AK │ Sources            │ COLLECTION  │ READY │ tag         │ ASCENDING │              │
-│              │                  │             │       │ name        │ ASCENDING │              │
-└──────────────┴──────────────────┴─────────────┴───────┴─────────────┴───────────┴──────────────┘
-
-gcloud firestore indexes composite delete CICAgJim14AK
-*/
-
-func (srv *SourcesapiService) FindByTags(tags []string, strlimit string) (interface{}, error) {
-	var apiType Source
-	var apiTypes []Source
-	return srv.persistenceLayer.FindByTags(tags, strlimit, apiType, apiTypes)
-}
-
-// PingGet - Server heartbeat operation
-func (srv *SourcesapiService) PingGet() (interface{}, error) {
-	observability.Logger("Info", "PingGet success")
-	return nil, nil
+	return srv.persistenceLayer.Find(queryParams, Source{})
 }
